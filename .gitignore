@@ -1,0 +1,16 @@
+﻿.idea/
+corpus/
+corpus1/
+data/
+data_entity/
+lib/
+target/
+*.project
+*.classpath
+*.iml
+*.class
+src/main/java/com/peopleyuqing
+*.ear
+*.log
+*.MF
+*.properties
