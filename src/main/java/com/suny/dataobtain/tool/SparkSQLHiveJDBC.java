@@ -27,8 +27,7 @@ public class SparkSQLHiveJDBC {
 
 	private String driverName = "org.apache.hive.jdbc.HiveDriver";
 
-	//private String url = "jdbc:hive2://10.38.11.1:10001/data_center?connectTimeout=5184000&autoReconnect=true&useUnicode=true&characterEncoding=utf8";
-	private String url = "jdbc:hive2://10.38.11.1:8080/hive/data_center";
+	private String url = "jdbc:hive2://*.*.*.*:****/hive/data_center";
 
 	public String getDriverName() {
 		return driverName;
