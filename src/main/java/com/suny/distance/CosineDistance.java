@@ -1,7 +1,7 @@
 package com.suny.distance;
 
 
-import com.suny.document.item.IndexVector;
+import com.suny.docu.item.IndexVector;
 
 /**
  * Class for calculating cosine distance between Vectors. 

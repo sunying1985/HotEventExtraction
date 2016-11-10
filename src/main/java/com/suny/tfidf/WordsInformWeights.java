@@ -6,9 +6,8 @@ import java.util.*;
 
 import com.suny.dictionary.EncryptDictionary;
 import com.suny.dictionary.SystemParas;
-import com.suny.document.item.IndexVector;
-import com.suny.document.item.ItemFreq;
-import sort.InvertedItemValue;
+import com.suny.docu.item.ItemFreq;
+import sortfreq.InvertedItemValue;
 
 /***
  * @author  Adolf Frank

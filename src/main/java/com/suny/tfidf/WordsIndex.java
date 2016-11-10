@@ -1,7 +1,7 @@
 package com.suny.tfidf;
 
-import com.suny.document.item.IndexVector;
-import com.suny.document.item.ItemFreq;
+import com.suny.docu.item.IndexVector;
+import com.suny.docu.item.ItemFreq;
 
 import java.util.HashMap;
 import java.util.Iterator;

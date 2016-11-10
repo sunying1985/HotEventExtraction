@@ -235,7 +235,7 @@ public class Dictionary {
 		if(unitFile.exists()) {
 			fin = new FileInputStream(unitFile);
 			addLastTime(unitFile);
-		} else {	//在jar包里的/data/unit.dic
+		} else {	//在jar包里的/dataobtain/unit.dic
 			fin = Dictionary.class.getResourceAsStream("/data_entity/units.dic");
 			unitFile = new File(Dictionary.class.getResource("/data_entity/units.dic").getFile());
 		}

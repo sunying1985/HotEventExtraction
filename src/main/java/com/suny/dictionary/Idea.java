@@ -3,7 +3,7 @@ package com.suny.dictionary;
 
 /**
  * this class is using for encrypt and decrypt word
- * protected our dictionary data
+ * protected our dictionary dataobtain
  * @author Frank suny
  * @version 1.0  date 20140801
  */
@@ -22,7 +22,7 @@ public class Idea {
 	public String getEncryptKey() {
 		return this.encryptKey;
 	}
-	// encrypt the input data using key
+	// encrypt the input dataobtain using key
     private byte[] Encrypt(byte[] bytekey, byte[] inputBytes, boolean flag) {
         
     	byte[] encryptCode = new byte[8];
@@ -37,13 +37,13 @@ public class Idea {
         return encryptCode;
     }
     
-    // change bytes data into Integer
+    // change bytes dataobtain into Integer
     private int bytesToInt(byte[] inBytes, int startPos) {
         return ((inBytes[startPos] << 8) & 0xff00) +
         (inBytes[startPos + 1] & 0xff);
     }
     
-    // change Integer data into bytes
+    // change Integer dataobtain into bytes
     private void intToBytes(int inputInt, byte[] outBytes, int startPos) {
         outBytes[startPos] = (byte) (inputInt >>> 8);
         outBytes[startPos + 1] = (byte) inputInt;
@@ -258,7 +258,7 @@ public class Idea {
     	String key = idea.encryptKey;
         
     	String data = "中华人名共和国";
-    	//String data = "360公司";
+    	//String dataobtain = "360公司";
     	data = data.length() + "\t" + data;
     	System.out.println(data);
         byte[] bytekey = key.getBytes();

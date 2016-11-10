@@ -77,7 +77,7 @@ public class EncryptDictionary {
      * get word into encrypt format
      * @param inWordFile      the word file we can see exmp: E:\\a\\xxx.txt
      * @return                true if success, otherwise is false
-     * this maybe return tow file, the index file and the eccrypt data file
+     * this maybe return tow file, the index file and the eccrypt dataobtain file
      */
     public boolean encryptWordFile( String inWordFile) {
     	if (inWordFile.isEmpty()) {
@@ -144,12 +144,12 @@ public class EncryptDictionary {
 			osw.close();
 			fos.close();
 			
-			// out the encrypt data into file
+			// out the encrypt dataobtain into file
 			FileOutputStream fosWord = new FileOutputStream(dictFile);	
 			String key = this.idea.getEncryptKey();	
 	    	byte[] bytekey = key.getBytes();
 	    	
-			// get the encrypt data
+			// get the encrypt dataobtain
 			byte[] bytedata = allText.getBytes();
 		    byte[] encryptdata = idea.IdeaEncrypt(bytekey, bytedata, true);
 		    
@@ -168,7 +168,7 @@ public class EncryptDictionary {
     /*
      * get word from index file and decrypt format file， Remove duplicate
      * @param encryptFile  the file path and name but not file suffix(.dict or idx)
-     *                     example:E:\\my_work\\DataMining\\data\\regiondata\\newRegionRpt
+     *                     example:E:\\my_work\\DataMining\\dataobtain\\regiondata\\newRegionRpt
      * @return true if success
      */
     public boolean decryptWordFile(String encryptFile) {
@@ -257,7 +257,7 @@ public class EncryptDictionary {
     /*
      * get word from index file and decrypt format file， this is in order with lines
      * @param encryptFile  the file path and name but not file suffix(.dict or idx)
-     *                     example:E:\\my_work\\DataMining\\data\\regiondata\\newRegionRpt
+     *                     example:E:\\my_work\\DataMining\\dataobtain\\regiondata\\newRegionRpt
      * @return true if success
      */
     public boolean decryptOrderWordFile(String encryptFile) {

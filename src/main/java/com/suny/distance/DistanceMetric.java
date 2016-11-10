@@ -1,6 +1,6 @@
 package com.suny.distance;
 
-import com.suny.document.item.IndexVector;
+import com.suny.docu.item.IndexVector;
 
 /**
  * Abstract class for measuring distances between documents, clusters and clusterLists. Here
