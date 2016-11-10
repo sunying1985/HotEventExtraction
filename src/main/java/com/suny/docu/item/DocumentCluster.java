@@ -166,7 +166,7 @@ public class DocumentCluster {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         String fileOutfile = "E:\\IntelliIDEA\\HotEventExtraction\\corpus1";
-        String  outfile = "E:\\IntelliIDEA\\HotEventExtraction\\dataobtain\\res_cluster.txt";
+        String  outfile = "E:\\IntelliIDEA\\HotEventExtraction\\data\\res_cluster.txt";
         DocumentCluster docuCluster = new DocumentCluster();
         docuCluster.getTopEvents(fileOutfile,outfile);
         /*
