@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class PrestoJDBC {
 	private static String driverName = "com.facebook.presto.jdbc.PrestoDriver";
-	private static String url = "jdbc:presto://10.38.11.1:8080/hive/data_center";
+	private static String url = "jdbc:presto:////*.*.*.*:****/hive/data_center";
 	private Connection connection = null;
 	private Statement createStatement = null;
 	private ResultSet rs = null;
