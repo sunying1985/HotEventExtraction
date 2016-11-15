@@ -13,16 +13,14 @@ import java.security.InvalidParameterException;
 public abstract class AbstractVectorSimilarityScore implements VectorSimilarity {
     public double getSimilarityDistance(IndexVector vector1, IndexVector vector2) {
         if (vector1 == null || vector2 == null) {
-            throw new InvalidParameterException("A similarity distance can't be computed on a null vector");
+            return 0.0;
         }
         if (vector1.size() != vector2.size()) {
-            throw new InvalidParameterException(
-                    "A similarity distance can't be computed on two vectors of different dimension");
+            return 0.0;
         }
 
         if (vector1.size() == 0) {
-            throw new InvalidParameterException(
-                    "A similarity distance can't be computed on two vectors without any dimension");
+            return 0.0;
         }
         return computeDistance(vector1, vector2);
     }
