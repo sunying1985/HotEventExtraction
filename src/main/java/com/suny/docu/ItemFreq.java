@@ -1,4 +1,4 @@
-package com.suny.docu.item;
+package com.suny.docu;
 
 import java.util.HashMap;
 import java.util.Iterator;

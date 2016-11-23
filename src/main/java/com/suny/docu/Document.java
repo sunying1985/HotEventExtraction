@@ -1,4 +1,8 @@
-package com.suny.docu.item;
+package com.suny.docu;
+
+import com.suny.keywords.process.TitleFilter;
+
+import java.util.Map;
 
 /**
  * Created by Frank Adolf
@@ -20,10 +24,17 @@ public class Document implements Comparable<Document> {
 	//  the word vector
 	private ItemFreq wordsFreq = null;
 
+	// the key words sorts arrays
+	private Map<String,Float> doucValue = null;
+
+	// the content fingerprints
+	private long printStr = 0;
+
 	public Document() {
 		this.id = 0;
 		this.title = "";
 		this.contents = "";
+		this.printStr = 0;
 	}
 
 	public Document(long id, String contents, String title) {
@@ -43,9 +54,19 @@ public class Document implements Comparable<Document> {
 			String [] items = record.split(splitTag);
 			if(items.length == 3) {
 				this.setId(Long.parseLong(items[0]));
-				this.setTitle(items[1]);
-				this.setContents(items[2]);
-				return true;
+				if(items[1].equals("") == false && items[2].equals("") == false) {
+					if(TitleFilter.containsFilters(items[1]) == false) {
+						this.setTitle(items[1]);
+						this.setContents(items[2]);
+						return true;
+					}
+					else {
+						return  false;
+					}
+				}
+				else {
+					return false;
+				}
 			}
 			else {
 				return false;
@@ -131,6 +152,23 @@ public class Document implements Comparable<Document> {
 	public void setWordsFreq(ItemFreq wordsFreq) {
 		this.wordsFreq = wordsFreq;
 	}
+
+	public Map<String, Float> getDoucValue() {
+		return doucValue;
+	}
+
+	public void setDoucValue(Map<String, Float> doucValue) {
+		this.doucValue = doucValue;
+	}
+
+	public Long getPrintStr() {
+		return printStr;
+	}
+
+	public void setPrintStr(Long printStr) {
+		this.printStr = printStr;
+	}
+
 
 	@Override
 	public String toString() {

@@ -1,14 +1,18 @@
-package com.suny.docu.item;
+package com.suny.docu;
 
 import com.suny.dataobtain.tool.DetermTextType;
 import com.suny.dataobtain.tool.FileTool;
+import com.suny.fingerprints.FingerPrint;
+import com.suny.keywords.TextRankKeyword;
 import com.suny.mmseg.interfa.MMsegInterface;
 import com.suny.tfidf.WordsInformWeights;
 
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank Adolf
@@ -16,70 +20,97 @@ import java.util.List;
  */
 public class DocumentCluster {
 
+    // 词频统计的阈值
+    private static final  int wordFreCutoff = 3;
+
+    // 所取关键词TopN数目
+    private  static  final  int topWordsNum = 100;
+
     private MMsegInterface segHandle = MMsegInterface.getInstance();
 
     private WordsInformWeights wordsInfor = WordsInformWeights.getInstance();
 
-    public  DocumentCluster() {
+    private  DocumentList  clusterArray = null;
 
+    public  DocumentCluster() {
+        this.clusterArray = new DocumentList();
     }
 
     /**
      * transform the content into words index
-     * @param text    the article context
+     * @param termList    the article words segments array
      */
-    public ItemFreq textTransWordsFreq(String text) {
-        if (text.length() < 6 || false == DetermTextType.textType(text) ) {
+    public ItemFreq textTransWordsFreq(List<String> termList) {
+        if (termList == null) {
             return  null;
         }
-        // segment pos index
-        int [] segPos = this.segHandle.textWordSegLable(text);
-        //System.out.println(text);
-        int  j = 0;
-        int textLength = text.length();
+        if(termList.size() < 4) {
+            return  null;
+        }
         ItemFreq itemFreq = new ItemFreq();
-        while (segPos[j] != 0 && j < textLength) {
-            //System.out.println("j\t" + j);
-            if (j == 0) {
-                String curWord = text.substring(0,segPos[j]);
-                if(false == this.wordsInfor.isStopWords(curWord) && curWord.length() > 1) {
-                    itemFreq.addItemsAndFreq(curWord,1);
-                }
-            }
-            else {
-                String curWord = text.substring(segPos[j - 1],segPos[j]);
-                if(false == this.wordsInfor.isStopWords(curWord) && curWord.length() > 1 ) {
-                    itemFreq.addItemsAndFreq(curWord,1);
-                }
-            }
-            j++;
+
+        for (int i = 0; i < termList.size(); i++) {
+            itemFreq.addItemsAndFreq(termList.get(i),1);
         }
 
         return itemFreq;
     }
 
+    // 序列化文本并计算
     public Document serializeDocument(String text) {
         Document curDoc = new Document();
         if(true == curDoc.createDocument(text)) {
-            ItemFreq wordsFreq = this.textTransWordsFreq(curDoc.getContents());
+            // words arrays
+            List<String> termList = this.segHandle.getWordsStrArrays(curDoc.getContents());
+            // 词频列表
+            /*ItemFreq wordsFreq = this.textTransWordsFreq(termList);
             if (wordsFreq == null) {
                 return curDoc;
             }
             // 进行cutoff used words Frequency
             if(wordsFreq.totalNumber < 10 || wordsFreq.itemFre.size() < 10) {
                 curDoc.setWordsFreq(wordsFreq);
+                // 关键词topN列表
+                Map<String,Float> curValue = new HashMap<String,Float>();
+                for (String key: wordsFreq.itemFre.keySet()) {
+                    float val = (float)wordsFreq.itemFre.get(key);
+                    curValue.put(key,val);
+                }
+                curDoc.setDoucValue(curValue);
             }
             else {
                 ItemFreq tempItem = new ItemFreq();
                 for (String key : wordsFreq.itemFre.keySet()) {
                     int freq = wordsFreq.itemFre.get(key);
-                    if(freq > 2) {
+                    if(freq > wordFreCutoff) {
                         tempItem.addItemsAndFreq(key,freq);
                     }
                 }
                 curDoc.setWordsFreq(tempItem);
+
+                // 关键词topN列表
+                TextRankKeyword textRankWord = new TextRankKeyword();
+                Map<String,Float> curValue = textRankWord.getTermRankTopN(termList,topWordsNum);
+                curDoc.setDoucValue(curValue);
             }
-            return  curDoc;
+            */
+            // 只有一种方法，提高速度
+            // 关键词topN列表
+            TextRankKeyword textRankWord = new TextRankKeyword();
+            Map<String,Float> curValue = textRankWord.getTermRankTopN(termList,topWordsNum);
+
+            if (curValue == null) {
+                return null;
+            }
+            else {
+                System.out.println(curValue.size());
+                curDoc.setDoucValue(curValue);
+                FingerPrint fingerHandel = new FingerPrint();
+                long  fingerScore = fingerHandel.fingerPrintMapScore(curValue);
+                curDoc.setPrintStr(fingerScore);
+                return  curDoc;
+            }
+
         }
         else {
             return  null;
@@ -95,13 +126,14 @@ public class DocumentCluster {
     public boolean getTopEvents(String filePath, String outfile) {
 
         List<String> fileArrays = FileTool.getFileNames(filePath);
-        DocumentList  clusterArray = new DocumentList();
+
         clusterArray.setWordsInfroHanle(this.wordsInfor);
 
         for (int k = 0; k < fileArrays.size(); k++) {
             String curFile = fileArrays.get(k);
-            this.stepFileEvents(curFile,clusterArray);
             System.out.println("the current file is :" + curFile);
+            this.stepFileEvents(curFile);
+
         }
         try {
             FileOutputStream fos = new FileOutputStream(new File(outfile));
@@ -130,10 +162,9 @@ public class DocumentCluster {
     /**
      * 处理单个文件
      * @param fileName      输入的文件
-     * @param arrCluster           累加的结果集合
      * @return
      */
-    public boolean stepFileEvents(String fileName,DocumentList arrCluster) {
+    public boolean stepFileEvents(String fileName) {
         if (fileName.equals("") == true) {
             return  false;
         }
@@ -150,8 +181,16 @@ public class DocumentCluster {
 
                 if (textLine.equals("") == false && textLine.isEmpty() == false) {
                     Document document = this.serializeDocument(textLine);
-                    //System.out.println(document.toString());
-                    arrCluster.addToDocumentList(document);
+                    if(document != null) {
+                        //System.out.println(document.toString());
+                        // 该处确定计算相似度使用的方法
+                        // words frequency
+                         //this.clusterArray.addToDocumentListWordsFreqIdf(document);
+                        // key words array
+                        // this.clusterArray.addToDocumentListKeyWords(document);
+                        //
+                        this.clusterArray.addToDocumentListSimFinger(document);
+                    }
                 }
             }
             br.close();
@@ -165,6 +204,8 @@ public class DocumentCluster {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        long start = System.currentTimeMillis();
+
         String fileOutfile = "E:\\IntelliIDEA\\HotEventExtraction\\corpus1";
         String  outfile = "E:\\IntelliIDEA\\HotEventExtraction\\data\\res_cluster.txt";
         DocumentCluster docuCluster = new DocumentCluster();
@@ -175,5 +216,6 @@ public class DocumentCluster {
             rest.printItemAndFre();
         }
         */
+        System.out.println("需要 "+(System.currentTimeMillis()-start)+" 微秒");
     }
 }
