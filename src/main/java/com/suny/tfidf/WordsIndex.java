@@ -1,7 +1,7 @@
 package com.suny.tfidf;
 
-import com.suny.docu.item.IndexVector;
-import com.suny.docu.item.ItemFreq;
+import com.suny.docu.IndexVector;
+import com.suny.docu.ItemFreq;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,6 +69,57 @@ public class WordsIndex {
 
         }
         return retTFIDFValue;
+    }
+
+    /**
+     * 根据关键词和其对应的权重获取（索引==权重）向量
+     * @param wordsArr   词语和其对应的千重
+     * @return			文本向量化结果
+     */
+    /*public IndexVector calculationIndexKeyWords(ItemValue wordsArr) {
+
+        if (wordsArr.itemFre.size() == 0) {
+            return null;
+        }
+        IndexVector  retWordsalue = new IndexVector(this.dictIndex.size() + 1);
+
+        Iterator<String> tfIter = wordsArr.itemFre.keySet().iterator();
+
+        while(tfIter.hasNext()) {
+            String word = tfIter.next().toString();
+            if(word.length() > 1 ) {
+                Double value = wordsArr.itemFre.get(word);
+                retWordsalue.set(this.getWordsIndex(word),value);
+            }
+
+        }
+        return retWordsalue;
+    }
+    */
+
+    /**
+     * 根据关键词和其对应的权重获取（索引==权重）向量
+     * @param wordsArr   词语和其对应的千重
+     * @return			文本向量化结果
+     */
+    public IndexVector calculationIndexKeyWordsDouble(Map<String,Float> wordsArr) {
+
+        if (wordsArr.size() == 0) {
+            return null;
+        }
+        IndexVector  retWordsalue = new IndexVector(this.dictIndex.size() + 1);
+
+        Iterator<String> tfIter = wordsArr.keySet().iterator();
+
+        while(tfIter.hasNext()) {
+            String word = tfIter.next().toString();
+            if(word.length() > 1 ) {
+                double value = wordsArr.get(word);
+                retWordsalue.set(this.getWordsIndex(word),value);
+            }
+
+        }
+        return retWordsalue;
     }
 
     /**

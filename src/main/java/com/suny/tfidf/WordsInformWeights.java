@@ -6,7 +6,7 @@ import java.util.*;
 
 import com.suny.dictionary.EncryptDictionary;
 import com.suny.dictionary.SystemParas;
-import com.suny.docu.item.ItemFreq;
+import com.suny.docu.ItemFreq;
 import sortfreq.InvertedItemValue;
 
 /***
