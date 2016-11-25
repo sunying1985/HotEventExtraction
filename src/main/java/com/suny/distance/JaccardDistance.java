@@ -1,7 +1,7 @@
 package com.suny.distance;
 
 
-import com.suny.docu.item.IndexVector;
+import com.suny.docu.IndexVector;
 /** 
  * Class for caculating Jaccard distance between Vectors.
  *  */
