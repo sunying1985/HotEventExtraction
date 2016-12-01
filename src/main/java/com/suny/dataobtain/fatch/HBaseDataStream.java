@@ -20,6 +20,7 @@ public class HBaseDataStream {
     //select count(distinct id) from data_center.article_info where year='2016' and month ='07' and
     //pubtime>='2016-07-03 00:00:00' and pubtime<='2016-07-03 23:59:59' and articletype = '1'
     public String sqlHead = "select id from data_center.article_info where year='2016' and month = ";
+    //public String sqlHead = "select id from data_center.weibo_info where year='2016' and month = ";
     public String[] heads = {"id"};
 
 
