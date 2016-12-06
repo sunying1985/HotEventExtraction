@@ -1,4 +1,4 @@
-package com.suny.dictionary;
+package com.suny.keywords.process;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
