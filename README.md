@@ -1,7 +1,7 @@
 # HotEventExtraction
 
 ##About Me： Frank Adolf
-Attention Natural Language Processing, machine learning, data mining, big data, artificial intelligence technology
+Focus on Natural Language Processing, machine learning, data mining, big data, artificial intelligence technology
 
 email:suny_nlp@163.com
 
